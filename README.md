@@ -57,14 +57,6 @@ Do not assume that the application requires administrative privileges unless exp
 
 Always review the source code before running it in a production environment.
 
-## Contributing
-
-Suggestions, bug reports, and improvements are welcome.
-
-You can use the project's GitHub Issues section to report problems or suggest new features.
-
-If you want to contribute code, please follow the project's contribution guidelines, if available.
-
 ## License
 
 This project is licensed under the MIT License.
@@ -78,5 +70,7 @@ See the [LICENSE](LICENSE) file for the full license text.
 ## Author
 
 **Srdjan Janjin**
+
+This application is provided as an open-source utility for SQL Server monitoring and administration. Use it at your own risk. The author assumes no responsibility for any damages or data loss resulting from the use of this software.
 
 Thank you for your interest in Simple SQL Server Monitor!
