@@ -71,6 +71,7 @@ See the [LICENSE](LICENSE) file for the full license text.
 
 **Srdjan Janjin**
 
-This application is provided as an open-source utility for SQL Server monitoring and administration. Use it at your own risk. The author assumes no responsibility for any damages or data loss resulting from the use of this software.
+
+**This application is provided as an open-source utility for SQL Server monitoring and administration. Use it at your own risk. The author assumes no responsibility for any damages or data loss resulting from the use of this software.**
 
 Thank you for your interest in Simple SQL Server Monitor!
