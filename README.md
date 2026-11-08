@@ -76,4 +76,11 @@ See the [LICENSE](LICENSE) file for the full license text.
 
 **This application is provided as an open-source utility for SQL Server monitoring and administration. Use it at your own risk. The author assumes no responsibility for any damages or data loss resulting from the use of this software.**
 
+**Trademark Disclaimer**
+
+Microsoft and SQL Server are trademarks of the Microsoft group of companies. Simple SQL Server Monitor is an independent, third-party application and is not affiliated with, endorsed by, sponsored by, or otherwise associated with Microsoft Corporation.
+
+The application is designed to monitor Microsoft SQL Server environments using standard SQL Server interfaces and diagnostic information.
+
+
 Thank you for your interest in Simple SQL Server Monitor!
