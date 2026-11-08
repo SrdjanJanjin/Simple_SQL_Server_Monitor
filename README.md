@@ -2,6 +2,8 @@
 
 **A simple tool for monitoring Microsoft SQL Server.**
 
+https://simplesqlservermonitor.blogspot.com/
+
 Simple SQL Server Monitor is a lightweight application designed to help users monitor Microsoft SQL Server and quickly access useful information about their SQL Server environment.
 
 The goal is to provide a straightforward monitoring tool that is easy to use, without unnecessary complexity.
