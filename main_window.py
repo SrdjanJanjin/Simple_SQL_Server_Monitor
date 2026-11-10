@@ -7,10 +7,12 @@ from __future__ import annotations
 
 import pyodbc
 import re
+import sys
+from pathlib import Path
 from decimal import Decimal
 from datetime import datetime, timedelta
 from PySide6.QtCore import Qt, QTimer, QUrl
-from PySide6.QtGui import QAction, QColor, QPainter, QFont, QFontMetrics, QPen, QTextCursor, QTextCharFormat, QDesktopServices
+from PySide6.QtGui import QAction, QColor, QPainter, QFont, QFontMetrics, QPen, QTextCursor, QTextCharFormat, QDesktopServices, QPixmap
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QApplication,
@@ -852,6 +854,40 @@ class MemoryOverviewChart(QWidget):
         painter.drawText(5, self.height() - 7, self.state)
 
 
+
+class HomeScreen(QWidget):
+    """Display the welcome dashboard image, scaled without distortion."""
+
+    def __init__(self, image_path, parent=None):
+        super().__init__(parent)
+        self._pixmap = QPixmap(str(image_path))
+        self.setMinimumSize(320, 180)
+        self.setStyleSheet("background-color: #151a1f;")
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.fillRect(self.rect(), QColor("#151a1f"))
+        if not self._pixmap.isNull():
+            target = self.rect().adjusted(8, 8, -8, -8)
+            scaled = self._pixmap.scaled(
+                target.size(),
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation,
+            )
+            x = target.x() + (target.width() - scaled.width()) // 2
+            y = target.y() + (target.height() - scaled.height()) // 2
+            painter.drawPixmap(x, y, scaled)
+        else:
+            painter.setPen(QColor("#E8EAED"))
+            painter.drawText(
+                self.rect(),
+                Qt.AlignmentFlag.AlignCenter,
+                "Simple SQL Server Monitor",
+            )
+        painter.end()
+
+
+
 class MainWindow(QMainWindow):
     """Application main window with menus and a results table."""
 
@@ -881,7 +917,17 @@ class MainWindow(QMainWindow):
         central_widget = QWidget(self)
         central_layout = QVBoxLayout(central_widget)
         central_layout.setContentsMargins(8, 8, 8, 8)
+
+        # Welcome screen shown when the application starts.
+        app_dir = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
+        self.home_screen = HomeScreen(
+            app_dir / "welcome_dashboard.png",
+            central_widget,
+        )
+        central_layout.addWidget(self.home_screen, 1)
+
         central_layout.addWidget(self.table, 1)
+        self.table.hide()
 
         totals_layout = QHBoxLayout()
         totals_layout.addStretch(1)
@@ -893,6 +939,8 @@ class MainWindow(QMainWindow):
             label.setStyleSheet("font-weight: bold; padding: 4px 8px;")
             totals_layout.addWidget(label)
         central_layout.addLayout(totals_layout)
+        self.total_gb_label.hide()
+        self.total_mb_label.hide()
 
         # Scrollable visual view used by Database files > Space usage.
         self.space_scroll = QScrollArea(self)
@@ -1882,6 +1930,7 @@ class MainWindow(QMainWindow):
         self._job_history_updating_list = False
 
         self._create_menus()
+        self.menuBar().triggered.connect(self._hide_home_screen)
         # Give the main menu bar a subtly different grey so it is visually distinct.
         self.menuBar().setStyleSheet("""
             QMenuBar { background-color: #e3e3e3; border-bottom: 1px solid #c8c8c8; }
@@ -1894,6 +1943,11 @@ class MainWindow(QMainWindow):
             QMenu::item:disabled { color: #888888; }
         """)
         self.statusBar().showMessage("Not connected")
+
+    def _hide_home_screen(self, action=None):
+        """Hide the welcome image after the user selects a menu command."""
+        if hasattr(self, "home_screen"):
+            self.home_screen.hide()
 
     def _set_view_mode(self, mode):
         """Set the active view and update whether Excel export is available."""
